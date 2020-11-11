@@ -66,3 +66,41 @@ router.post('/', function (req, res) {
     // has resulted in one or more new resources being created. 
     res.status(201).json(newItem);
 });
+
+
+// UPDATE
+router.put('/:id', function (req, res) {
+
+    let found = data.find(function (item) {
+        return item.id === parseInt(req.params.id);
+    });
+    if (found) {
+        let updated = {
+            id: found.id,
+            title: req.body.title, 
+            order: req.body.order, 
+            completed: req.body.completed 
+        };
+        let targetIndex = data.indexOf(found);
+        data.splice(targetIndex, 1, updated);
+        res.sendStatus(204);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+// DELETE
+router.delete('/:id', function (req, res) {
+    // find item from array of data
+    let found = data.find(function (item) {
+        return item.id === parseInt(req.params.id);
+    });
+
+    if (found) {
+
+        let targetIndex = data.indexOf(found);
+        data.splice(targetIndex, 1);
+    } 
+    res.sendStatus(204);
+}); 
+module.exports = router;
