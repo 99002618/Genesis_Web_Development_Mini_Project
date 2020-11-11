@@ -11,12 +11,17 @@ let data = [
     { id: 5, title: 'Have some dinner', order: 5, completed: false, createdOn: new Date() },
 ];
 
+// HTTP methods ↓↓ starts here.
 
+// READ
+// this api end-point of an API returns JSON data array
 router.get('/', function (req, res) {
     res.status(200).json(data);
 });
 
-
+// READ
+// this api end-point returns an object from a data array find by id
+// we get `id` from URL end-points
 router.get('/:id', function (req, res) {
     // find an object from `data` array match by `id`
     let found = data.find(function (item) {
@@ -30,7 +35,9 @@ router.get('/:id', function (req, res) {
     }
 });
 
-
+// CREATE
+// this api end-point add new object to item list
+// that is add new object to `data` array
 router.post('/', function (req, res) {
     // get itemIds from data array
     let itemIds = data.map(item => item.id);
@@ -54,44 +61,8 @@ router.post('/', function (req, res) {
     // push new item object to data array of items
     data.push(newItem);
 
-   
+     // return with status 201
+    // 201 means Created. The request has been fulfilled and 
+    // has resulted in one or more new resources being created. 
     res.status(201).json(newItem);
 });
-
-
-// UPDATE
-router.put('/:id', function (req, res) {
-    
-    let found = data.find(function (item) {
-        return item.id === parseInt(req.params.id);
-    });
-    if (found) {
-        let updated = {
-            id: found.id,
-            title: req.body.title, 
-            order: req.body.order, 
-            completed: req.body.completed 
-        };
-        let targetIndex = data.indexOf(found);
-        data.splice(targetIndex, 1, updated);
-        res.sendStatus(204);
-    } else {
-        res.sendStatus(404);
-    }
-});
- 
-// DELETE
-router.delete('/:id', function (req, res) {
-    // find item from array of data
-    let found = data.find(function (item) {
-        return item.id === parseInt(req.params.id);
-    });
- 
-    if (found) {
-       
-        let targetIndex = data.indexOf(found);
-        data.splice(targetIndex, 1);
-    } 
-    res.sendStatus(204);
-}); 
-module.exports = router;
