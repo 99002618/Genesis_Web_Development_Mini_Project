@@ -69,20 +69,27 @@ router.post('/', function (req, res) {
 
 
 // UPDATE
+// this api end-point update an existing item object
+// for that we get `id` and `title` from api end-point of item to update
 router.put('/:id', function (req, res) {
-
+// get item object match by `id`
     let found = data.find(function (item) {
         return item.id === parseInt(req.params.id);
     });
+    // check if item found
     if (found) {
         let updated = {
             id: found.id,
-            title: req.body.title, 
-            order: req.body.order, 
-            completed: req.body.completed 
-        };
+            title: req.body.title, // check if item found
+            order: req.body.order, // set value of `order` get from req
+            completed: req.body.completed // set value of `completed` get from req
+        };// find index of found object from array of data
         let targetIndex = data.indexOf(found);
+        // replace object from data list with `updated` object
         data.splice(targetIndex, 1, updated);
+        // return with status 204
+        // success status response code 204 indicates
+        // that the request has succeeded
         res.sendStatus(204);
     } else {
         res.sendStatus(404);
@@ -90,6 +97,8 @@ router.put('/:id', function (req, res) {
 });
 
 // DELETE
+// this api end-point delete an existing item object from
+// array of data, match by `id` find item and then delete
 router.delete('/:id', function (req, res) {
     // find item from array of data
     let found = data.find(function (item) {
@@ -97,8 +106,10 @@ router.delete('/:id', function (req, res) {
     });
 
     if (found) {
-
+        // if item found then find index at which the item is
+        // stored in the `data` array
         let targetIndex = data.indexOf(found);
+        // splice means delete item from `data` array using index
         data.splice(targetIndex, 1);
     } 
     res.sendStatus(204);
